@@ -1,9 +1,16 @@
 <style>
-  #code{ border: 2px solid; }
+  .task .CodeMirror{
+    height: 500px;
+    width: 800px;
+    border: 2px solid;
+  }
+
+  .task .instruction{
+
+  }
+    
 </style>
 <body>
-  <div id="code"></div>
-  <input id="go" type="button" value="go"/>
 </body>
 
 <script src="jquery-1.9.1.min.js"></script>
@@ -13,10 +20,17 @@
 <link rel="stylesheet" href="codemirror/lib/codemirror.css">
 <script src="codemirror/mode/javascript/javascript.js"></script>
 
+<script id="taskView" type="text/template">
+  <h1>Task</h1>
+  <div class="instruction"><%= instruction %></div>
+  <h1>HTML</h1>
+  <div class="html"><%= html %></div>
+  <h1>Code</h1>
+  <textarea class="code"><%- js %></textarea>
+  <input id="go" type="button" value="go"/>
+</script>
 <script>
-  var code = CodeMirror($('#code')[0], {
-    mode:  "javascript"
-  });
+  "use strict";
 
   $('#go').on('click', function(){
     console.log(code.getValue());
@@ -24,7 +38,7 @@
 
   var router = new Backbone.Router({
     routes: {
-      ":query":        "page",  // #search/kiwis
+      ":query": "page",  // #search/kiwis
     }
   });
   router.on('route:page', function(page){
@@ -32,4 +46,57 @@
   });
 
   Backbone.history.start({root: "/"});
+
+  var Task = Backbone.Model.extend();
+  var TaskView = Backbone.View.extend({
+    className: 'task',
+    template: _.template($('#taskView').html()),
+    render: function(){
+      this.$el.html(this.template(this.model.attributes));
+
+      var $textarea = this.$el.find('textarea.code');
+      var codeMirror = CodeMirror.fromTextArea($textarea[0]);
+
+      $('body').append(this.el);
+      codeMirror.refresh();
+    }
+  });
+
+  var tasks = {
+    tasks: {},
+    add: function(name, o){
+      if (this.tasks[name]) {
+        throw {reason: "You are overwriting existing task. It's surely wrong"};
+      }
+      this.tasks[name] = o;
+    },
+    load: function(name){
+      if (this.tasks[name]){
+        var o = this.tasks[name];
+        var task = new Task(o);
+        var taskView = new TaskView({
+          model: task
+        });
+        var render = taskView.render();
+        console.log(render);
+        $('body').append(render);
+      } else {
+        throw {reason: "You are trying to get unexistent task. Die!"};
+      }
+    }
+  };
+
+  // task is our main function to add new code challenge
+  tasks.add("initial", {
+    js: "var a = [1,2,3,4,5]",
+    html: '<div id="someId">insert result here</div>',
+    instruction: 'insert string content of variable a into div#someId using jquery',
+    tests: function(){
+      test("dummy test", function(){
+        ok(1 === 1, "ok");
+      });
+    }
+  });
+
+  tasks.load("initial");
 </script>

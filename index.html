@@ -1,0 +1,35 @@
+<style>
+  #code{ border: 2px solid; }
+</style>
+<body>
+  <div id="code"></div>
+  <input id="go" type="button" value="go"/>
+</body>
+
+<script src="jquery-1.9.1.min.js"></script>
+<script src="underscore.js"></script>
+<script src="backbone-min.js"></script>
+<script src="codemirror/lib/codemirror.js"></script>
+<link rel="stylesheet" href="codemirror/lib/codemirror.css">
+<script src="codemirror/mode/javascript/javascript.js"></script>
+
+<script>
+  var code = CodeMirror($('#code')[0], {
+    mode:  "javascript"
+  });
+
+  $('#go').on('click', function(){
+    console.log(code.getValue());
+  });
+
+  var router = new Backbone.Router({
+    routes: {
+      ":query":        "page",  // #search/kiwis
+    }
+  });
+  router.on('route:page', function(page){
+    console.log(page);
+  });
+
+  Backbone.history.start({root: "/"});
+</script>

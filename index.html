@@ -1,3 +1,14 @@
+<!doctype html>
+<title>js - introduction</title>
+<head>
+<link rel="stylesheet" href="qunit.css" />
+<link rel="stylesheet" href="codemirror/lib/codemirror.css" />
+<script src="jquery-1.9.1.min.js"></script>
+<script src="underscore.js"></script>
+<script src="backbone-min.js"></script>
+<script src="codemirror/lib/codemirror.js"></script>
+<script src="qunit.js"></script>
+<script src="codemirror/mode/javascript/javascript.js"></script>
 <style>
   .task .CodeMirror{
     height: 500px;
@@ -8,17 +19,11 @@
   .task .instruction{
 
   }
-    
 </style>
+</head>
 <body>
+<div id="qunit"></div><div id="qunit-fixture"></div>
 </body>
-
-<script src="jquery-1.9.1.min.js"></script>
-<script src="underscore.js"></script>
-<script src="backbone-min.js"></script>
-<script src="codemirror/lib/codemirror.js"></script>
-<link rel="stylesheet" href="codemirror/lib/codemirror.css">
-<script src="codemirror/mode/javascript/javascript.js"></script>
 
 <script id="taskView" type="text/template">
   <h1>Task</h1>
@@ -27,14 +32,10 @@
   <div class="html"><%= html %></div>
   <h1>Code</h1>
   <textarea class="code"><%- js %></textarea>
-  <input id="go" type="button" value="go"/>
+  <input class="go" type="button" value="go"/>
 </script>
 <script>
   "use strict";
-
-  $('#go').on('click', function(){
-    console.log(code.getValue());
-  });
 
   var router = new Backbone.Router({
     routes: {
@@ -51,6 +52,12 @@
   var TaskView = Backbone.View.extend({
     className: 'task',
     template: _.template($('#taskView').html()),
+    events: {
+      'click .go': function(e){
+        var tests = this.model.get('tests');
+        tests();
+      }
+    },
     render: function(){
       this.$el.html(this.template(this.model.attributes));
 
@@ -77,6 +84,7 @@
         var taskView = new TaskView({
           model: task
         });
+
         var render = taskView.render();
         console.log(render);
         $('body').append(render);
@@ -100,3 +108,5 @@
 
   tasks.load("initial");
 </script>
+
+</html>

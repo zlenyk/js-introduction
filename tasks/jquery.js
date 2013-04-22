@@ -1,4 +1,6 @@
-tasks.add("jquery/find-body", {
+tasks.module('jquery');
+
+tasks.add("find-body", {
   instruction: 'Save jQuery object for body into body variable',
   js: "var body = ?;",
   html: "",

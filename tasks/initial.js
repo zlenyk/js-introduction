@@ -1,4 +1,6 @@
-tasks.add("initial/hello", {
+tasks.module('initial');
+
+tasks.add("hello", {
   instruction: 'Write a function named hi which returns string "hello"',
   js: "var a = [1,2,3,4]",
   html: "<em>test</em>",
@@ -8,4 +10,8 @@ tasks.add("initial/hello", {
       equal(hi(), "hello", "correct value returned");
     });
   }
+});
+
+tasks.add("hello2", {
+  instruction: "say hello"
 });

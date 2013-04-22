@@ -36,8 +36,10 @@ var TaskView = Backbone.View.extend({
   }
 });
 var tasks = {
+  prefix: "",
   tasks: {},
   add: function(name, o){
+    name = this.prefix + "/" + name;
     if (this.tasks[name]) {
       throw {reason: "You are overwriting existing task. It's surely wrong"};
     }
@@ -55,5 +57,8 @@ var tasks = {
     } else {
       throw {reason: "You are trying to get unexistent task. Die!"};
     }
+  },
+  module: function(name){
+    this.prefix = name;
   }
 };

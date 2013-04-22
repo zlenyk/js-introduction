@@ -21,4 +21,7 @@ router.on('route:default', function(){
   var tasksView = new TasksView();
   tasksView.render();
 });
+
+
+    
 Backbone.history.start();

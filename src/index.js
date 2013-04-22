@@ -10,16 +10,41 @@ var Task = Backbone.Model.extend({
     instructions: "someone has forgotten instruction to this test"
   }
 });
+
+var TasksListView = Backbone.View.extend({
+	template: _.template($('#tasksList').html()),
+    render: function(){
+	  var classes = {};
+	  console.debug('adas');
+	  
+	  tasks.tasks.each(function(task){
+		  var n = task.get('name').split('/');
+		 if(classes[n[0]]===undefined)classes[n[0]] = [];
+		 classes[n[0]].push(n[1]);
+	  });
+
+		
+      $('#menu').html(this.template({
+        classes: classes
+      }));
+    }
+});
+
 var TaskView = Backbone.View.extend({
   className: 'task',
   template: _.template($('#taskView').html()),
   events: {
     'click .go': function(e){
+	  QUnit.reset();  // should clear the DOM
+	  QUnit.init();   // resets the qunit test environment
+	  QUnit.start();
+      
       var editor = this.model.get('editor');
 
       var code = editor.getSession().getValue();
-      eval.call(window, code);
+      window.eval.call(window, code);
 
+	  
       var tests = this.model.get('tests');
       tests();
     },
@@ -42,6 +67,9 @@ var TaskView = Backbone.View.extend({
     }
   },
   render: function(){
+	QUnit.config.altertitle = false;
+	QUnit.config.reorder = false;
+	console.debug('TAK');
     this.$el.html(this.template(this.model.attributes));
     $('#content').html(this.el);
 
@@ -67,6 +95,9 @@ var tasks = {
     }
 
     this.tasks.push(task);
+    
+    var tasksList = new TasksListView();
+    tasksList.render();
   },
   load: function(name){
     var task = this.tasks.findWhere({name: name});
@@ -95,3 +126,4 @@ var tasks = {
     return this.tasks.at(i + 1);
   }
 };
+

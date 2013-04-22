@@ -22,6 +22,12 @@
     <input class="go" type="button" value="go"/>
   </script>
   <script src="src/index.js"></script>
+  <script src="dist/tasks.js"></script>
+  <script>
+    $(document).ready(function(){
+      tasks.load("hello");
+    });
+  </script>
 </head>
 <body>
   <div id="qunit"></div><div id="qunit-fixture"></div>

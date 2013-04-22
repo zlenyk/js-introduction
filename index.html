@@ -2,15 +2,14 @@
 
 <title>js - introduction</title>
 <head>
-  <link rel="stylesheet" href="qunit.css" />
-  <link rel="stylesheet" href="codemirror/lib/codemirror.css" />
-  <script src="jquery-1.9.1.min.js"></script>
-  <script src="underscore.js"></script>
-  <script src="backbone-min.js"></script>
-  <script src="codemirror/lib/codemirror.js"></script>
-  <script src="qunit.js"></script>
+  <link rel="stylesheet" href="deps/qunit.css" />
 
-  <script src="ace/ace.js" type="text/javascript" charset="utf-8"></script>
+  <script src="deps/jquery-1.9.1.min.js"></script>
+  <script src="deps/underscore.js"></script>
+  <script src="deps/backbone-min.js"></script>
+  <script src="deps/codemirror/lib/codemirror.js"></script>
+  <script src="deps/qunit.js"></script>
+  <script src="deps/ace/ace.js" type="text/javascript" charset="utf-8"></script>
 
   <style type="text/css" media="screen">
     .code{
@@ -122,6 +121,8 @@
   // task is our main function to add new code challenge
   tasks.add("initial", {
     instruction: 'Write a function named hi which returns string "hello"',
+    js: "var a = [1,2,3,4]",
+    html: "<em>test</em>",
     tests: function(){
       test("hello test", function(){
         ok(typeof(hi) === "function", "hi is a function");

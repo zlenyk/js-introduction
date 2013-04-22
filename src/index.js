@@ -22,6 +22,23 @@ var TaskView = Backbone.View.extend({
 
       var tests = this.model.get('tests');
       tests();
+    },
+    'click .prev': function(e){
+      var prev = tasks.getPrev(this.model.get('name'));
+      if(prev){
+        router.navigate('task/' + prev.get('name'), {trigger: true});
+      }else{
+        // oh c'mon, alert?!
+        alert('no prev');
+      }
+    },
+    'click .next': function(e){
+      var next = tasks.getNext(this.model.get('name'));
+      if(next){
+        router.navigate('task/' + next.get('name'), {trigger: true});
+      }else{
+        alert('no next');
+      }
     }
   },
   render: function(){
@@ -35,24 +52,28 @@ var TaskView = Backbone.View.extend({
     this.model.set('editor', editor);
   }
 });
+
 var tasks = {
   prefix: "",
-  tasks: {},
+  tasks: new Backbone.Collection(),
   add: function(name, o){
     name = this.prefix + "/" + name;
-    if (this.tasks[name]) {
+    o.name = name;
+
+    var task = new Task(o);
+
+    if(this.tasks.where({name: name}).length){
       throw {reason: "You are overwriting existing task. It's surely wrong"};
     }
-    this.tasks[name] = o;
+
+    this.tasks.push(task);
   },
   load: function(name){
-    if (this.tasks[name]){
-      var o = this.tasks[name];
-      var task = new Task(o);
+    var task = this.tasks.findWhere({name: name});
+    if(task){
       var taskView = new TaskView({
         model: task
       });
-
       taskView.render();
     } else {
       throw {reason: "You are trying to get unexistent task. Die!"};
@@ -60,5 +81,17 @@ var tasks = {
   },
   module: function(name){
     this.prefix = name;
+  },
+  // returns previous and next task in the same
+  // module of tasks
+  getPrev: function(name){
+    var task = this.tasks.findWhere({name: name});
+    var i = this.tasks.indexOf(task);
+    return this.tasks.at(i - 1);
+  },
+  getNext: function(name){
+    var task = this.tasks.findWhere({name: name});
+    var i = this.tasks.indexOf(task);
+    return this.tasks.at(i + 1);
   }
 };

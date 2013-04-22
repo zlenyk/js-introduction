@@ -1,8 +1,9 @@
 <!doctype html>
 
-<title>js - introduction</title>
 <head>
+  <title>js - introduction</title>
   <link rel="stylesheet" href="deps/qunit.css" />
+  <link rel="stylesheet" href="src/index.css" />
 
   <script src="deps/jquery-1.9.1.min.js"></script>
   <script src="deps/underscore.js"></script>
@@ -11,127 +12,18 @@
   <script src="deps/qunit.js"></script>
   <script src="deps/ace/ace.js" type="text/javascript" charset="utf-8"></script>
 
-  <style type="text/css" media="screen">
-    .code{
-      width: 600px;;
-      height: 200px;
-      position: relative;
-    }
-  </style>
-  <style>
-    .task .CodeMirror{
-      height: 500px;
-      width: 800px;
-      border: 2px solid;
-    }
-  </style>
+  <script id="taskView" type="text/template">
+    <h1>Task</h1>
+    <div class="instruction"><%= instruction %></div>
+    <h1>HTML</h1>
+    <div class="html"><%= html %></div>
+    <h1>Code</h1>
+    <div class="code"><%- js %></div>
+    <input class="go" type="button" value="go"/>
+  </script>
+  <script src="src/index.js"></script>
 </head>
 <body>
   <div id="qunit"></div><div id="qunit-fixture"></div>
 </body>
-
-<script id="taskView" type="text/template">
-  <h1>Task</h1>
-  <div class="instruction"><%= instruction %></div>
-  <h1>HTML</h1>
-  <div class="html"><%= html %></div>
-  <h1>Code</h1>
-  <div class="code"><%- js %></div>
-  <input class="go" type="button" value="go"/>
-</script>
-<script>
-  "use strict";
-
-  var router = new Backbone.Router({
-    routes: {
-      ":query": "page",  // #search/kiwis
-    }
-  });
-  router.on('route:page', function(page){
-    console.log(page);
-  });
-
-  Backbone.history.start({root: "/"});
-
-  var Task = Backbone.Model.extend({
-    defaults: {
-      html: "",
-      js: "",
-      tests: function(){
-        ok(1, "dummy test");
-      },
-      instructions: "someone has forgotten instruction to this test"
-    }
-  });
-  var TaskView = Backbone.View.extend({
-    className: 'task',
-    template: _.template($('#taskView').html()),
-    events: {
-      'click .go': function(e){
-        var editor = this.model.get('editor');
-
-        var code = editor.getSession().getValue();
-        console.log(code);
-        eval.call(window, code);
-
-        var tests = this.model.get('tests');
-        tests();
-      }
-    },
-    render: function(){
-      console.log(this.model.get("html"));
-
-      this.$el.html(this.template(this.model.attributes));
-
-      $('body').append(this.el);
-
-      var editor = ace.edit(this.$('.code')[0]);
-      editor.setTheme("ace/theme/monokai");
-      editor.getSession().setMode("ace/mode/javascript");
-
-      this.model.set('editor', editor);
-    }
-  });
-
-  var tasks = {
-    tasks: {},
-    add: function(name, o){
-      if (this.tasks[name]) {
-        throw {reason: "You are overwriting existing task. It's surely wrong"};
-      }
-      this.tasks[name] = o;
-    },
-    load: function(name){
-      if (this.tasks[name]){
-        var o = this.tasks[name];
-        var task = new Task(o);
-        var taskView = new TaskView({
-          model: task
-        });
-
-        var render = taskView.render();
-        console.log(render);
-        $('body').append(render);
-        } else {
-        throw {reason: "You are trying to get unexistent task. Die!"};
-      }
-    }
-  };
-
-  // task is our main function to add new code challenge
-  tasks.add("initial", {
-    instruction: 'Write a function named hi which returns string "hello"',
-    js: "var a = [1,2,3,4]",
-    html: "<em>test</em>",
-    tests: function(){
-      test("hello test", function(){
-        ok(typeof(hi) === "function", "hi is a function");
-        equal(hi(), "hello", "correct value returned");
-      });
-    }
-  });
-
-  tasks.load("initial");
-</script>
-
 </html>

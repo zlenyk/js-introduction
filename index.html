@@ -21,15 +21,21 @@
     <div class="code"><%- js %></div>
     <input class="go" type="button" value="go"/>
   </script>
-  <script src="src/index.js"></script>
-  <script src="dist/tasks.js"></script>
-  <script>
-    $(document).ready(function(){
-      tasks.load("hello");
-    });
+  <script id="tasksView" type="text/template">
+    <h1>Tasks</h1>
+    <ul>
+      <% _.each(tasks, function(task, name){ %>
+        <li><a href="#task/<%= name %>"><%= name %></a></li>
+        <% }); %>
+    </ul>
   </script>
 </head>
 <body>
   <div id="qunit"></div><div id="qunit-fixture"></div>
+  <div id="content"></div>
 </body>
+
+  <script src="src/index.js"></script>
+  <script src="dist/tasks.js"></script>
+  <script src="src/router.js"></script>
 </html>

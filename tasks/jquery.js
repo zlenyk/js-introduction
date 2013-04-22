@@ -1,4 +1,4 @@
-tasks.add("find-body", {
+tasks.add("jquery/find-body", {
   instruction: 'Save jQuery object for body into body variable',
   js: "var body = ?;",
   html: "",

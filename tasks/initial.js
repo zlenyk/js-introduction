@@ -1,4 +1,4 @@
-tasks.add("hello", {
+tasks.add("initial/hello", {
   instruction: 'Write a function named hi which returns string "hello"',
   js: "var a = [1,2,3,4]",
   html: "<em>test</em>",

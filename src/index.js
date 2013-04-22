@@ -1,16 +1,5 @@
 "use strict";
 
-var router = new Backbone.Router({
-  routes: {
-    ":query": "page",  // #search/kiwis
-  }
-});
-router.on('route:page', function(page){
-  console.log(page);
-});
-
-Backbone.history.start({root: "/"});
-
 var Task = Backbone.Model.extend({
   defaults: {
     html: "",
@@ -29,7 +18,6 @@ var TaskView = Backbone.View.extend({
       var editor = this.model.get('editor');
 
       var code = editor.getSession().getValue();
-      console.log(code);
       eval.call(window, code);
 
       var tests = this.model.get('tests');
@@ -37,14 +25,8 @@ var TaskView = Backbone.View.extend({
     }
   },
   render: function(){
-    console.log(this.model.get("html"));
-
     this.$el.html(this.template(this.model.attributes));
-
-    console.log(this.el, $('body'));
-
-
-    $('body').append(this.el);
+    $('#content').html(this.el);
 
     var editor = ace.edit(this.$('.code')[0]);
     editor.setTheme("ace/theme/monokai");
@@ -53,7 +35,6 @@ var TaskView = Backbone.View.extend({
     this.model.set('editor', editor);
   }
 });
-
 var tasks = {
   tasks: {},
   add: function(name, o){
@@ -70,9 +51,7 @@ var tasks = {
         model: task
       });
 
-      var render = taskView.render();
-      console.log(render);
-      $('body').append(render);
+      taskView.render();
     } else {
       throw {reason: "You are trying to get unexistent task. Die!"};
     }

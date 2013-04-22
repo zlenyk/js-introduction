@@ -1,0 +1,11 @@
+{
+  "name": "js-introduction",
+  "version": "0.0.1",
+  "author": "Tomasz Kołodziejski <tkolodziejski@gmail.com>",
+  "dependencies": {
+    "grunt": "*",
+    "grunt-contrib-concat": "*"
+  }
+}
+
+

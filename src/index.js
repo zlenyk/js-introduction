@@ -1,5 +1,15 @@
 "use strict";
 
+// utility used in tasks
+var U = {
+  isObject: function(obj, err){
+    strictEqual(typeof(obj), "object", err || "it's an object");
+  },
+  isFunction: function(f, err){
+    strictEqual(typeof(f), "function", err || "it's a function");
+  }
+};
+
 var Task = Backbone.Model.extend({
   defaults: {
     html: "",
@@ -62,6 +72,11 @@ var TaskView = Backbone.View.extend({
     var editor = ace.edit(this.$('.code')[0]);
     editor.setTheme("ace/theme/monokai");
     editor.getSession().setMode("ace/mode/javascript");
+
+    var that = this;
+    editor.on('change', function(){
+      that.model.set('js', editor.getSession().getValue());
+    });
 
     this.model.set('editor', editor);
   }

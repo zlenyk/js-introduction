@@ -1,14 +1,5 @@
 tasks.module('objects');
 
-var U = {
-  isObject: function(obj, err){
-    strictEqual(typeof(obj), "object", err || "it's an object");
-  },
-  isFunction: function(f, err){
-    strictEqual(typeof(f), "function", err || "it's a function");
-  }
-};
-
 tasks.add('create', {
   instruction: 'Create an object named `obj` with property `hello` and value `"world"`',
   js: 'var obj = ?',

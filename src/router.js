@@ -10,18 +10,20 @@ router.on('route:task', function(page){
   tasks.load(page);
 });
 router.on('route:default', function(){
-  var TasksView = Backbone.View.extend({
-    template: _.template($('#tasksView').html()),
-    render: function(){
-      $('#content').html(this.template({
-        tasks: tasks.tasks
-      }));
-    }
-  });
-  var tasksView = new TasksView();
+});
+Backbone.history.start();
+
+var TasksView = Backbone.View.extend({
+  template: _.template($('#tasksView').html()),
+  render: function(){
+    $('#menu').html(this.template({
+      tasks: tasks.getGrouped()
+    }));
+  }
+});
+var tasksView = new TasksView();
+tasksView.render();
+
+tasks.tasks.on('change:status', function(){
   tasksView.render();
 });
-
-
-    
-Backbone.history.start();

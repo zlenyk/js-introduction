@@ -7,29 +7,14 @@ var Task = Backbone.Model.extend({
     tests: function(){
       ok(1, "dummy test");
     },
-    instructions: "someone has forgotten instruction to this test"
+    instructions: "someone has forgotten instruction to this test",
+    status: "none" 
+  },
+  getShortName: function(){
+    var name = this.get('name');
+    return name.substr(name.indexOf('/') + 1);
   }
 });
-
-var TasksListView = Backbone.View.extend({
-	template: _.template($('#tasksList').html()),
-    render: function(){
-	  var classes = {};
-	  console.debug('adas');
-	  
-	  tasks.tasks.each(function(task){
-		  var n = task.get('name').split('/');
-		 if(classes[n[0]]===undefined)classes[n[0]] = [];
-		 classes[n[0]].push(n[1]);
-	  });
-
-		
-      $('#menu').html(this.template({
-        classes: classes
-      }));
-    }
-});
-
 var TaskView = Backbone.View.extend({
   className: 'task',
   template: _.template($('#taskView').html()),
@@ -42,11 +27,16 @@ var TaskView = Backbone.View.extend({
       var editor = this.model.get('editor');
 
       var code = editor.getSession().getValue();
-      window.eval.call(window, code);
+      eval.call(window, code);
 
-	  
       var tests = this.model.get('tests');
       tests();
+
+      if($('#qunit-tests').children().last().hasClass('pass')){
+        this.model.set('status', 'pass');
+      }else{
+        this.model.set('status', 'fail');
+      }
     },
     'click .prev': function(e){
       var prev = tasks.getPrev(this.model.get('name'));
@@ -67,9 +57,6 @@ var TaskView = Backbone.View.extend({
     }
   },
   render: function(){
-	QUnit.config.altertitle = false;
-	QUnit.config.reorder = false;
-	console.debug('TAK');
     this.$el.html(this.template(this.model.attributes));
     $('#content').html(this.el);
 
@@ -84,6 +71,11 @@ var TaskView = Backbone.View.extend({
 var tasks = {
   prefix: "",
   tasks: new Backbone.Collection(),
+  getGrouped: function(){
+    return this.tasks.groupBy(function(task){
+      return task.get('name').split('/')[0];
+    });
+  },
   add: function(name, o){
     name = this.prefix + "/" + name;
     o.name = name;
@@ -95,9 +87,6 @@ var tasks = {
     }
 
     this.tasks.push(task);
-    
-    var tasksList = new TasksListView();
-    tasksList.render();
   },
   load: function(name){
     var task = this.tasks.findWhere({name: name});
@@ -105,6 +94,7 @@ var tasks = {
       var taskView = new TaskView({
         model: task
       });
+      
       taskView.render();
     } else {
       throw {reason: "You are trying to get unexistent task. Die!"};
@@ -126,4 +116,3 @@ var tasks = {
     return this.tasks.at(i + 1);
   }
 };
-

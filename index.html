@@ -14,10 +14,10 @@
   <script src="deps/ace/ace.js" type="text/javascript" charset="utf-8"></script>
 
   <script id="taskView" type="text/template">
-    <h1>Task <%= name.replace('/', '::') %></h1>
+    <h1>Task</h1>
     <div class="instruction"><%= instruction %></div>
-    <% if(html){ %><h1>HTML</h1>
-    <div class="html"><%= html %></div><% }; %>
+    <h1>HTML</h1>
+    <div class="html"><%= html %></div>
     <h1>Code</h1>
     <div class="code"><%- js %></div>
     <input class="go" type="button" value="go"/>
@@ -26,52 +26,19 @@
     <input class="next" type="button" value="next" />
   </script>
   <script id="tasksView" type="text/template">
-    <h1>Tasks</h1>
-    <ul>
-      <% tasks.each(function(task){ %>
-        <li><a href="#task/<%= task.get('name') %>"><%= task.get('name') %></a></li>
+    <% _(tasks).each(function(group, groupName){ %>
+      <h3><%= groupName %></h3>
+      <ul>
+        <% _(group).each(function(task){ %>
+          <li id="task/<%= task.get('name') %>" class="<%= task.get('status') %>"><a href="#task/<%= task.get('name') %>"><%= task.getShortName() %></a></li>
+          <% }); %>
+      </ul>
       <% }); %>
-    </ul>
+  </h3>
   </script>
-  
-  <script id="tasksList" type="text/template">
-	<% for(var _class in classes){ %>
-		 <h3><%= _class %></h3>
-		 <ul>
-		 <% for(var task in classes[_class]){ var t = classes[_class][task]; %>
-			 <li id="task/<%= _class+"/"+t %>"><a href="#task/<%= _class+'/'+t %>"><%= t %></a></li>
-		 <% }; %>
-	<% }; %>
-  </script>
-</head>
 <body>
 	<div id="layout">
-	<div id="menu">
-		<h3>DOM</h3>
-		<ul>
-			<li id="task/jquery/find-body"><a href="">asds</a></li>
-			<li><a href="">asds</a></li>
-			<li><a href="">asds</a></li>
-			<li class="passed"><a href="">asds</a></li>
-			<li><a href="">asds</a></li>
-		</ul>	
-		<h3>JQuery</h3>
-		<ul>
-			<li><a href="">asds</a></li>
-			<li><a href="">asds</a></li>
-			<li><a href="">asds</a></li>
-			<li class="passed"><a href="">asds</a></li>
-			<li><a href="">asds</a></li>
-		</ul>
-		<h3>Ajax</h3>
-		<ul>
-			<li><a href="">asds</a></li>
-			<li><a href="">asds</a></li>
-			<li><a href="">asds</a></li>
-			<li class="passed"><a href="">asds</a></li>
-			<li><a href="">asds</a></li>
-		</ul>	
-	</div>
+	<div id="menu"></div>
 	<div id="right-column">
 		<div id="content"></div>
 		<div id="qunit"></div><div id="qunit-fixture"></div>

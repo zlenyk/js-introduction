@@ -30,12 +30,12 @@
       <h3><%= groupName %></h3>
       <ul>
         <% _(group).each(function(task){ %>
-          <li id="task/<%= task.get('name') %>" class="<%= task.get('status') %>"><a href="#task/<%= task.get('name') %>"><%= task.getShortName() %></a></li>
+          <li class="<%= task.get('status') %>"><a href="#task/<%= task.get('name') %>"><%= task.getShortName() %></a></li>
           <% }); %>
       </ul>
       <% }); %>
-  </h3>
   </script>
+</head>
 <body>
 	<div id="layout">
 	<div id="menu"></div>

@@ -7,10 +7,15 @@ module.exports = function(grunt) {
         src: ['tasks/*'],
         dest: 'dist/tasks.js'
       }
+    },
+    watch: {
+      files: 'tasks/*',
+      tasks: ['concat']
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.registerTask('default', ['concat']);
 };

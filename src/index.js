@@ -5,7 +5,7 @@ var Task = Backbone.Model.extend({
     html: "",
     js: "",
     tests: function(){
-      ok(1, "dummy test");
+      alert("someone has forgotten tests!");
     },
     instructions: "someone has forgotten instruction to this test",
     status: "none" 

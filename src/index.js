@@ -56,6 +56,9 @@ var TaskView = Backbone.View.extend({
     this.$el.html(this.template(this.model.attributes));
     $('#content').html(this.el);
 
+    var $ins = this.$('.instruction');
+    $ins.html($ins.html().replace(/`(.*?)`/g, "<code>$1</code>"));
+
     var editor = ace.edit(this.$('.code')[0]);
     editor.setTheme("ace/theme/monokai");
     editor.getSession().setMode("ace/mode/javascript");

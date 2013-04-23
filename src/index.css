@@ -3,3 +3,9 @@
   height: 200px;
   position: relative;
 }
+
+code{
+  background: #ddd;
+  border-radius: 5px;
+  padding: 5px;
+}

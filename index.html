@@ -24,17 +24,22 @@
     <input class="next" type="button" value="next" />
   </script>
   <script id="tasksView" type="text/template">
-    <h1>Tasks</h1>
-    <ul>
-      <% tasks.each(function(task){ %>
-        <li><a href="#task/<%= task.get('name') %>"><%= task.get('name') %></a></li>
+    <% _(tasks).each(function(group, groupName){ %>
+      <h3><%= groupName %></h3>
+      <ul>
+        <% _(group).each(function(task){ %>
+          <li class="<%= task.get('status') %>"><a href="#task/<%= task.get('name') %>"><%= task.getShortName() %></a></li>
+          <% }); %>
+      </ul>
       <% }); %>
-    </ul>
+  </h3>
   </script>
 </head>
 <body>
   <div id="qunit"></div><div id="qunit-fixture"></div>
   <div id="content"></div>
+
+  <div id="menu"></div>
 </body>
 
   <script src="src/index.js"></script>

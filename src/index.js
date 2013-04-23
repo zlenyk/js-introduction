@@ -7,7 +7,12 @@ var Task = Backbone.Model.extend({
     tests: function(){
       ok(1, "dummy test");
     },
-    instructions: "someone has forgotten instruction to this test"
+    instructions: "someone has forgotten instruction to this test",
+    status: "none" 
+  },
+  getShortName: function(){
+    var name = this.get('name');
+    return name.substr(name.indexOf('/') + 1);
   }
 });
 var TaskView = Backbone.View.extend({
@@ -22,6 +27,12 @@ var TaskView = Backbone.View.extend({
 
       var tests = this.model.get('tests');
       tests();
+
+      if($('#qunit-tests').children().last().hasClass('pass')){
+        this.model.set('status', 'pass');
+      }else{
+        this.model.set('status', 'fail');
+      }
     },
     'click .prev': function(e){
       var prev = tasks.getPrev(this.model.get('name'));
@@ -56,6 +67,11 @@ var TaskView = Backbone.View.extend({
 var tasks = {
   prefix: "",
   tasks: new Backbone.Collection(),
+  getGrouped: function(){
+    return this.tasks.groupBy(function(task){
+      return task.get('name').split('/')[0];
+    });
+  },
   add: function(name, o){
     name = this.prefix + "/" + name;
     o.name = name;

@@ -125,5 +125,35 @@ tasks.add('events', {
 			ok(_ilosc === 1, 'multiple event');
 		});
 	}
-	
 });
+
+tasks.add('json', {
+	instruction: 'You will received string in JSON format describing content of user\'s cart. Write function `sumUp` returning cost of all items in it.',
+	js: 'function sumUp(json){\n\t//TODO\n}',
+	tests: function(){
+		test('json', function(){
+			ok(typeof(sumUp) === 'function', 'sumUp is defined');
+			ok(sumUp('{"firstName":"John","lastName":"Smith","items":[{"name":"a","price":10,"amount":2},{"name":"b","price":7.5,"amount":3}]}') === 42.5, 'simply case');
+		});
+	}
+});
+
+tasks.add('ajax', {
+	instruction: 'Your task is to send query to remote server `http://open.mapquestapi.com/nominatim/v1/search.php?format=json&q=kraków+[castle]`, parse received JSON data and pass pair (array) of numeric coordinates of Wawel to callback provided as a parameter.',
+	js: 'function query(callback){\n\t//TODO\n}',
+	tests: function(){
+		asyncTest('ajax', 2,  function(){
+			ok(typeof(query) === 'function', 'query is defined');
+			var f = function(x){
+				//console.debug(x);
+				deepEqual(x, [parseFloat("50.05441295"), parseFloat("19.9360155090054")], 'good answer');
+				start();
+			};
+			setTimeout(function(){console.debug('TAK');ok(false, 'timeout');start();}, 5000);
+			
+			query(f);
+			
+		});
+	}
+});
+

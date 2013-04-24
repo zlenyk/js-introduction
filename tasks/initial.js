@@ -1,8 +1,26 @@
 tasks.module('initial');
 
 
+tasks.add('docs', {
+	instruction: 'Read following docs:<ul><li><a href="https://developer.mozilla.org/en-US/docs/JavaScript/Guide">JavaScript Guide</a></li><li><a href="http://try.jquery.com/">Try JQuery</a></li><li><a href="http://en.wikipedia.org/wiki/JSON">JSON format</a></li><li><a href="http://api.jquery.com/">JQuery API Documentation</a></li></ul>',
+	tests: function(){}	
+});
 
-
+tasks.add('regexp', {
+	instruction: 'Write function `phoneNumber` which gets string and return `true` if it is of a form \'###-###-###\' and `false` otherwise.',
+	js: 'function phoneNumber(phone){\n\t//TODO\n}',
+	tests: function(){
+		test('regexp', function(){
+			ok(typeof(phoneNumber) === 'function', 'phoneNumber is defined');
+			ok(phoneNumber('123-123-123') === true, 'simply case');
+			ok(phoneNumber('asd-asd-asd') === false, 'with letters');
+			ok(phoneNumber('asdas23123daczx') === false, 'random test');
+			ok(phoneNumber('1234-1232-123') === false, 'too much digits');
+			ok(phoneNumber('123-123-123\n123-123-123') === false, 'multiline test');
+			ok(phoneNumber('     123-123-123    ') === false, 'trailing/leading spaces');
+		});
+	}
+});
 /*tasks.add("sum-free-set", {
 	instruction: "Write a function named `f` which for given array of 'integers' check whether it is sum free.",
 	js: "function f(array){\n\t//TODO\n}",

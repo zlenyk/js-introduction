@@ -99,3 +99,43 @@ function unhide(){
 function setClick(f){
     $('#clickMe').off('click').on('click', f);
 }
+
+/* initial::regexp */
+function phoneNumber(phone){
+	return (/^\d{3}-\d{3}-\d{3}$/).test(phone);
+}
+
+/* functions::variable-function */
+function sum(){
+    var res = 0;
+    for(var i=0;i<arguments.length;i++)
+        res+=arguments[i];
+    return res;
+}
+
+/* jquery::json */
+function sumUp(json){
+	var obj = JSON.parse(json), res = 0,i;
+    for(i=0;i<obj.items.length;i++)
+        res+=obj.items[i].price*obj.items[i].amount;
+    return res;
+}
+
+/* jquery::ajax */
+function query(callback){
+    $.ajax('http://open.mapquestapi.com/nominatim/v1/search.php', {
+        'data': {
+            'format':'json',
+            'q': 'kraków [castle]'
+        },
+        'success': function(data){
+            for(var i=0;i<data.length;i++)
+                if(data[i].display_name.indexOf('Wawel')!=-1){
+                    console.debug(data[i].lat+' '+data[i].lon);
+                    callback([parseFloat(data[i].lat), parseFloat(data[i].lon)]);
+                    return;
+                }
+            callback([0.0, 0.0]);
+        }
+    });
+}

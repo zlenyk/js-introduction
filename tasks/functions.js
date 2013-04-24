@@ -86,3 +86,18 @@ tasks.add("closure", {
     });
   }
 });
+
+tasks.add("variable-function", {
+	instruction: 'Write function `sum` which takes variable number of numbers and returns its\' sum.',
+	js: '',
+	tests: function(){
+		test('variable-function', function(){
+			ok(typeof(sum) === 'function', 'sum is defined');
+			ok(sum() === 0, '0 numbers');
+			ok(sum(7) === 7, '1 numbers');
+			ok(sum(1,2) === 3, '2 numbers');
+			ok(sum(1,2,3,4,5) === 15, '5 numbers');
+			ok(sum(1,1,1,1,1,1,1,1,1,1,1,1,1,1,1) === 15, '15 numbers');
+		});
+	}
+});

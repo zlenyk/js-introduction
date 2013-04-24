@@ -43,13 +43,11 @@ var TaskView = Backbone.View.extend({
 	  });*/
 	  var parent = this;
 	  QUnit.testDone(function( details ) {
-		console.debug(details);
 		if(details.passed==details.total){
 			parent.model.set('status', 'pass');
 		}else{
 			parent.model.set('status', 'fail');
 		}
-		console.log( "Finished running: ", details.module, details.name, "Failed/total: ", details.failed, details.total, details.duration );
 	  });
 	  
       var editor = this.model.get('editor');

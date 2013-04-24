@@ -63,7 +63,7 @@ tasks.add('changing-this', {
       var p = {
         value: 1
       };
-      ok(f(o, p)() === 1, "method applied correctly");
+      ok(f(p, o)() === 1, "method applied correctly");
     });
   }
 });

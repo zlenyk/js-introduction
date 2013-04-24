@@ -1,11 +1,76 @@
+body, html{height:100%;margin:0;padding:0}
+
 .code{
-  width: 600px;;
+  /*width: 600px;;*/
   height: 200px;
   position: relative;
 }
-
 code{
   background: #ddd;
   border-radius: 5px;
   padding: 5px;
 }
+
+body{background:rgb(226, 238, 243);}
+#layout{
+	background:rgb(226, 238, 243);
+	position:relative;
+	min-height:100%;
+}
+#menu{
+	background-color: #2b81af;
+	color: #333;
+	position:relative;
+	font-family:"Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Calibri, Helvetica, Arial, sans-serif;
+	width:180px;
+	float:left;border-right:3px solid #C6E746;
+	padding:0 10px;
+	min-height:100%;
+	position:absolute;
+}
+
+#menu h3{
+	color:#eee;
+	font-size:1.1em;margin:0;padding:0;padding-top:10px;
+}
+
+#menu ul{
+	/*list-style-type:square;*/
+	list-style-type:none;
+	color:#ccc;
+	padding:0;
+	margin:0;
+}
+
+#menu li:target{
+	background:yellow;
+}
+
+#menu a{padding-left:10px;display:block;height:22px;line-height:auto;position:relative;}
+/*#menu a:before{content:"-- ";}*/
+#menu a:hover{
+	background-color: rgba(255,255,255,0.3);
+}
+
+
+#menu li a{color:black;text-decoration:none;}
+#menu li a:after{content:"✘";color:#e11;right:6px;position:absolute}
+#menu li.pass a:after{content:"✔";color:#3e1;right:6px;position:absolute}
+
+#right-column{padding:10px;padding-left:220px;}
+
+hr.clear{height:0;width:0;border:0;padding:0;margin:0;visibility:hidden;clear:both;}
+
+
+#qunit-tests {list-style-type:none;}
+#qunit-tests li{padding:0.4em 0.5em 0.4em 0.5em}
+#qunit-tests li strong, #qunit-tests li span.runtime{display:none}{display:none}
+
+#qunit-tests li a{display:none;}
+
+.qunit-collapsed{display:block;}
+#qunit-testrunner-toolbar{display:none;}
+
+#qunit{margin-top:20px;}
+
+#qunit-header{display:none;}

@@ -1,6 +1,8 @@
 <!doctype html>
 <head>
-  <title>js - introduction</title>
+  <title>JS - Introduction</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  
   <link rel="stylesheet" href="deps/qunit.css" />
   <link rel="stylesheet" href="src/index.css" />
 
@@ -32,14 +34,17 @@
           <% }); %>
       </ul>
       <% }); %>
-  </h3>
   </script>
 </head>
 <body>
-  <div id="qunit"></div><div id="qunit-fixture"></div>
-  <div id="content"></div>
-
-  <div id="menu"></div>
+	<div id="layout">
+	<div id="menu"></div>
+	<div id="right-column">
+		<div id="content"></div>
+		<div id="qunit"></div><div id="qunit-fixture"></div>
+	</div>
+	<hr class="clear"/>
+	</div>
 </body>
 
   <script src="src/index.js"></script>

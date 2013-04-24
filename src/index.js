@@ -30,6 +30,28 @@ var TaskView = Backbone.View.extend({
   template: _.template($('#taskView').html()),
   events: {
     'click .go': function(e){
+	  QUnit.reset();  // should clear the DOM
+	  QUnit.init();   // resets the qunit test environment
+	  QUnit.start();
+      /*QUnit.testDone(function(obj){
+		 console.debug(obj);
+		if(obj.failed==0){
+			this.model.set('status', 'pass');
+		}else{
+			this.model.set('status', 'fail');
+		}
+	  });*/
+	  var parent = this;
+	  QUnit.testDone(function( details ) {
+		console.debug(details);
+		if(details.passed==details.total){
+			parent.model.set('status', 'pass');
+		}else{
+			parent.model.set('status', 'fail');
+		}
+		console.log( "Finished running: ", details.module, details.name, "Failed/total: ", details.failed, details.total, details.duration );
+	  });
+	  
       var editor = this.model.get('editor');
 
       var code = editor.getSession().getValue();
@@ -38,11 +60,7 @@ var TaskView = Backbone.View.extend({
       var tests = this.model.get('tests');
       tests();
 
-      if($('#qunit-tests').children().last().hasClass('pass')){
-        this.model.set('status', 'pass');
-      }else{
-        this.model.set('status', 'fail');
-      }
+      
     },
     'click .prev': function(e){
       var prev = tasks.getPrev(this.model.get('name'));
@@ -108,6 +126,7 @@ var tasks = {
       var taskView = new TaskView({
         model: task
       });
+      
       taskView.render();
     } else {
       throw {reason: "You are trying to get unexistent task. Die!"};

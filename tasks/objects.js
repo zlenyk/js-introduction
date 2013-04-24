@@ -98,7 +98,7 @@ tasks.add('returning-object', {
   tests: function(){
     test('check-function', function(){
       var a = f('yeah');
-      deepEqual(f, {name: 'yeah'}, 'correct object returned');
+      deepEqual(a, {name: 'yeah'}, 'correct object returned');
     });
   }
 });

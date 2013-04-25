@@ -15,10 +15,9 @@ Backbone.history.start();
 
 var MenuTaskView = Backbone.View.extend({
   tagName: 'li',
-  initialize: function(model){
-    this.model = model;
+  initialize: function(){
     var view = this;
-    model.on('change:current change:status', function(){
+    this.model.on('change:current change:status', function(){
       view.$el.attr('class', '');
       view.$el.addClass(this.get('status'));
       if(this.get('current')){
@@ -46,7 +45,7 @@ var TasksView = Backbone.View.extend({
       that.$el.append("<h3>" + groupName + "</h3>");
       var ul = $('<ul>');
       _(group).each(function(task){
-        var menuTaskView = new MenuTaskView(task);
+        var menuTaskView = new MenuTaskView({model: task});
         ul.append(menuTaskView.render());
       });
       that.$el.append(ul);

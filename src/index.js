@@ -38,8 +38,10 @@ var TaskView = Backbone.View.extend({
   template: _.template($('#taskView').html()),
   events: {
     'click .go': function(e){
-      QUnit.reset();  // should clear the DOM
-      QUnit.init();   // resets the qunit test environment
+      // this is some test resetting magic. Normally you don't do that
+      // with QUnit so it doesn't work too well
+      QUnit.reset();
+      QUnit.init();
       QUnit.start();
 
       var editor = this.model.get('editor');

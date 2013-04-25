@@ -1,5 +1,13 @@
 "use strict";
 
+// we needed to create custom event emmiter
+// for testDone as QUnit does not let us
+// unregister
+QUnit.tests = $({});
+QUnit.testDone(function(results){
+  QUnit.tests.trigger('done', results);
+});
+
 // utility used in tasks
 var U = {
   isObject: function(obj, err){
@@ -30,26 +38,10 @@ var TaskView = Backbone.View.extend({
   template: _.template($('#taskView').html()),
   events: {
     'click .go': function(e){
-	  QUnit.reset();  // should clear the DOM
-	  QUnit.init();   // resets the qunit test environment
-	  QUnit.start();
-      /*QUnit.testDone(function(obj){
-		 console.debug(obj);
-		if(obj.failed==0){
-			this.model.set('status', 'pass');
-		}else{
-			this.model.set('status', 'fail');
-		}
-	  });*/
-	  var parent = this;
-	  QUnit.testDone(function( details ) {
-		if(details.passed==details.total){
-			parent.model.set('status', 'pass');
-		}else{
-			parent.model.set('status', 'fail');
-		}
-	  });
-	  
+      QUnit.reset();  // should clear the DOM
+      QUnit.init();   // resets the qunit test environment
+      QUnit.start();
+
       var editor = this.model.get('editor');
 
       var code = editor.getSession().getValue();
@@ -58,7 +50,10 @@ var TaskView = Backbone.View.extend({
       var tests = this.model.get('tests');
       tests();
 
-      
+      var that = this;
+      QUnit.tests.one('done', function(e, res){
+        that.model.set('status', !res.failed ? 'pass' : 'fail');
+      });
     },
     'click .prev': function(e){
       var prev = tasks.getPrev(this.model.get('name'));

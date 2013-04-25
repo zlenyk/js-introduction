@@ -54,7 +54,7 @@ body{background:rgb(226, 238, 243);}
 
 
 #menu li a{color:black;text-decoration:none;}
-#menu li a:after{content:"✘";color:#e11;right:6px;position:absolute}
+#menu li.fail a:after{content:"✘";color:#e11;right:6px;position:absolute}
 #menu li.pass a:after{content:"✔";color:#3e1;right:6px;position:absolute}
 
 #right-column{padding:10px;padding-left:220px;}

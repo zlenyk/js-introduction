@@ -1,7 +1,6 @@
 body, html{height:100%;margin:0;padding:0}
 
 .code{
-  /*width: 600px;;*/
   height: 200px;
   position: relative;
 }
@@ -9,6 +8,9 @@ code{
   background: #ddd;
   border-radius: 5px;
   padding: 5px;
+  border-width: 0 1px 1px 0;
+  border-style: solid;
+  border-color: #bbb;
 }
 
 body{background:rgb(226, 238, 243);}
@@ -20,13 +22,11 @@ body{background:rgb(226, 238, 243);}
 #menu{
 	background-color: #2b81af;
 	color: #333;
-	position:relative;
 	font-family:"Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Calibri, Helvetica, Arial, sans-serif;
-	width:180px;
+	width:200px;
 	float:left;border-right:3px solid #C6E746;
-	padding:0 10px;
+	padding:0;
 	min-height:100%;
-	position:absolute;
 }
 
 #menu h3{
@@ -35,27 +35,40 @@ body{background:rgb(226, 238, 243);}
 }
 
 #menu ul{
-	/*list-style-type:square;*/
-	list-style-type:none;
-	color:#ccc;
+	list-style-type:square;
+	color:#eee;
 	padding:0;
-	margin:0;
+	margin:0 0 0 20px;
 }
 
-#menu li:target{
-	background:yellow;
+#menu li{
+  transition: .5s;
+  position: relative;
 }
 
-#menu a{padding-left:10px;display:block;height:22px;line-height:auto;position:relative;}
-/*#menu a:before{content:"-- ";}*/
+#menu li.current{
+	background:#C6E746;
+  padding: 0 0 0 6px;
+  border-radius: 3px 0 0 3px;
+}
+
+#menu a{display: block}
 #menu a:hover{
 	background-color: rgba(255,255,255,0.3);
 }
 
 
 #menu li a{color:black;text-decoration:none;}
-#menu li.fail a:after{content:"✘";color:#e11;right:6px;position:absolute}
-#menu li.pass a:after{content:"✔";color:#3e1;right:6px;position:absolute}
+#menu li a:after{
+  right:6px;position:absolute;
+  text-shadow: 2px 2px 6px #000;
+}
+#menu li.fail a:after{
+  content:"✘";color:#EE5757;
+}
+#menu li.pass a:after{
+  content:"✔";color:#C6E746;
+}
 
 #right-column{padding:10px;padding-left:220px;}
 

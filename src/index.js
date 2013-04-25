@@ -116,10 +116,14 @@ var tasks = {
   load: function(name){
     var task = this.tasks.findWhere({name: name});
     if(task){
+      this.tasks.each(function(task){
+        task.set('current', false);
+      });
+
+      task.set('current', true);
       var taskView = new TaskView({
         model: task
       });
-      
       taskView.render();
     } else {
       throw {reason: "You are trying to get unexistent task. Die!"};

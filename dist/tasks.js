@@ -74,7 +74,7 @@ tasks.add('sum-of-array', {
 });
 
 tasks.add('mul-table', {
-	instruction: 'Write function `mulTable` which for given integer `n` returns multiplication table for numbers 1..n (Array t, such as t[i][j] = i*j).',
+	instruction: 'Write function `mulTable` which for given integer `n` returns multiplication table for numbers 1..n (Array t, such as t[i-1][j-1] = i*j).',
 	js: 'function mulTable(n){\n\t//TODO\n}',
 	tests: function(){
 		test('mul-table', function(){

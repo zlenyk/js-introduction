@@ -1,46 +1,47 @@
 <!doctype html>
-<head>
-  <title>JS - Introduction</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  
-  <link rel="stylesheet" href="deps/qunit.css" />
-  <link rel="stylesheet" href="src/index.css" />
+<html>
+  <head>
+    <title>JS - Introduction</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
-  <script src="deps/jquery-1.9.1.min.js"></script>
-  <script src="deps/underscore.js"></script>
-  <script src="deps/backbone-min.js"></script>
-  <script src="deps/codemirror/lib/codemirror.js"></script>
-  <script src="deps/qunit.js"></script>
-  <script src="deps/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" href="deps/qunit.css" />
+    <link rel="stylesheet" href="src/index.css" />
 
-  <script id="taskView" type="text/template">
-    <h1>Task</h1>
-    <div class="instruction"><%= instruction %></div>
-    <h1>HTML</h1>
-    <div class="html"><%= html %></div>
-    <h1>Code</h1>
-    <div class="code"><%- js %></div>
-    <input class="go" type="button" value="go"/>
+    <script src="deps/jquery-1.9.1.min.js"></script>
+    <script src="deps/underscore.js"></script>
+    <script src="deps/backbone-min.js"></script>
+    <script src="deps/codemirror/lib/codemirror.js"></script>
+    <script src="deps/qunit.js"></script>
+    <script src="deps/ace/ace.js" type="text/javascript" charset="utf-8"></script>
 
-    <input class="prev" type="button" value="prev" />
-    <input class="next" type="button" value="next" />
-  </script>
-  <script id="menuTasksView" type="text/template">
-    <a href="#task/<%= task.get('name') %>"><%= task.getShortName() %></a>
-  </script>
-</head>
-<body>
-	<div id="layout">
-	<div id="menu"></div>
-	<div id="right-column">
-		<div id="content"></div>
-		<div id="qunit"></div><div id="qunit-fixture"></div>
-	</div>
-	<hr class="clear"/>
-	</div>
-</body>
+    <script id="taskView" type="text/template">
+      <h1>Task</h1>
+      <div class="instruction"><%= instruction %></div>
+      <h1>HTML</h1>
+      <div class="html"><%= html %></div>
+      <h1>Code</h1>
+      <div class="code"><%- js %></div>
+      <input class="go" type="button" value="go"/>
 
-  <script src="src/index.js"></script>
-  <script src="dist/tasks.js"></script>
-  <script src="src/router.js"></script>
+      <input class="prev" type="button" value="prev" />
+      <input class="next" type="button" value="next" />
+    </script>
+    <script id="menuTasksView" type="text/template">
+      <a href="#task/<%= task.get('name') %>"><%= task.getShortName() %></a>
+    </script>
+  </head>
+  <body>
+    <div id="layout">
+      <div id="menu"></div>
+      <div id="right-column">
+        <div id="content"></div>
+        <div id="qunit"></div><div id="qunit-fixture"></div>
+      </div>
+      <hr class="clear"/>
+    </div>
+
+    <script src="src/index.js"></script>
+    <script src="dist/tasks.js"></script>
+    <script src="src/router.js"></script>
+  </body>
 </html>

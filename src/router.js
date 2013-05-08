@@ -9,9 +9,6 @@ var router = new Backbone.Router({
 router.on('route:task', function(page){
   tasks.load(page);
 });
-router.on('route:default', function(){
-});
-Backbone.history.start();
 
 var MenuTaskView = Backbone.View.extend({
   tagName: 'li',
@@ -53,5 +50,8 @@ var TasksView = Backbone.View.extend({
     $('#menu').append(this.el);
   }
 });
-var tasksView = new TasksView(tasks.tasks);
-tasksView.render();
+tasks.onLoad(function(){
+  var tasksView = new TasksView(tasks.tasks);
+  tasksView.render();
+  Backbone.history.start();
+});

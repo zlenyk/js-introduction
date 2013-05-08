@@ -18,6 +18,8 @@ var U = {
   }
 };
 
+var db = Pouch('tasks');
+
 var Task = Backbone.Model.extend({
   defaults: {
     html: "",
@@ -31,6 +33,32 @@ var Task = Backbone.Model.extend({
   getShortName: function(){
     var name = this.get('name');
     return name.substr(name.indexOf('/') + 1);
+  },
+  fetch: function(callback){
+    var name = this.getEscapedName();
+    var that = this;
+    db.get(name, function(err, res){
+      if(!err){
+        that.set('js', res.js);
+      }
+      callback()
+    });
+  },
+  getEscapedName: function(){
+    return btoa(this.get('name'));
+  },
+  save: function(){
+    var name = this.getEscapedName();
+    var js = this.get('js');
+    db.get(name, function(err, res){
+      var doc = {_id: name, js: js};
+      if(!err){
+        doc._rev = res._rev;
+      }
+      db.post(doc, function(err, res){
+        //console.log('saved task', err, res);
+      });
+    });
   }
 });
 var TaskView = Backbone.View.extend({
@@ -89,6 +117,7 @@ var TaskView = Backbone.View.extend({
     var that = this;
     editor.on('change', function(){
       that.model.set('js', editor.getSession().getValue());
+      that.model.save();
     });
 
     this.model.set('editor', editor);
@@ -145,5 +174,15 @@ var tasks = {
     var task = this.tasks.findWhere({name: name});
     var i = this.tasks.indexOf(task);
     return this.tasks.at(i + 1);
+  },
+  onLoad: function(callback){
+    var count = this.tasks.length;
+    this.tasks.forEach(function(task){
+      task.fetch(function(){
+        if(!--count){
+          callback();
+        }
+      });
+    });
   }
 };

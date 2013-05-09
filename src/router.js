@@ -3,11 +3,45 @@
 var router = new Backbone.Router({
   routes: {
     "task/*taskname": "task",  // #search/kiwis
+    "import": "import",
+    "export": "export",
     "*path": "default"
   }
 });
 router.on('route:task', function(page){
   tasks.load(page);
+});
+router.on('route:import', function(page){
+  var $content = $('#content');
+  var $textarea = $('<textarea class="import">');
+  $content.html($textarea);
+
+  var $import = $('<button>import</button>');
+  $import.on('click', function(){
+    var data = $textarea.val();
+    data.split(/\n==========\n/g).forEach(function(data){
+      var data = data.split("\n---\n");
+      var name = data[0];
+      var js = data[1];
+
+      var task = tasks.tasks.findWhere({name: name});
+      if(!task){
+        console.log('task ' + name + ' not found');
+      }else{
+        task.set('js', js);
+      }
+    });
+  });
+  $content.append($import);
+});
+router.on('route:export', function(page){
+  var $textarea = $('<textarea class="export">');
+  var data = '';
+  tasks.tasks.forEach(function(task){
+    data += task.get('name') + "\n---\n" + task.get('js') + "\n==========\n\n";
+  });
+  $textarea.text(data);
+  $('#content').html($textarea);
 });
 
 var MenuTaskView = Backbone.View.extend({

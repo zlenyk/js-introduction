@@ -65,7 +65,7 @@ var TaskView = Backbone.View.extend({
   className: 'task',
   template: _.template($('#taskView').html()),
   events: {
-    'click .go': function(e){
+    'click .go': function(){
       // this is some test resetting magic. Normally you don't do that
       // with QUnit so it doesn't work too well
       QUnit.reset();
@@ -85,7 +85,7 @@ var TaskView = Backbone.View.extend({
         that.model.set('status', !res.failed ? 'pass' : 'fail');
       });
     },
-    'click .prev': function(e){
+    'click .prev': function(){
       var prev = tasks.getPrev(this.model.get('name'));
       if(prev){
         router.navigate('task/' + prev.get('name'), {trigger: true});
@@ -94,7 +94,7 @@ var TaskView = Backbone.View.extend({
         alert('no prev');
       }
     },
-    'click .next': function(e){
+    'click .next': function(){
       var next = tasks.getNext(this.model.get('name'));
       if(next){
         router.navigate('task/' + next.get('name'), {trigger: true});

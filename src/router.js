@@ -19,16 +19,19 @@ router.on('route:import', function(page){
   var $import = $('<button>import</button>');
   $import.on('click', function(){
     var data = $textarea.val();
-    data.split(/\n==========\n/g).forEach(function(data){
-      var data = data.split("\n---\n");
+    data.split(/\n+==========\n+/g).forEach(function(data){
+      var data = data.split(/\n+---\n+/);
       var name = data[0];
       var js = data[1];
 
+      console.log(data);
+
       var task = tasks.tasks.findWhere({name: name});
       if(!task){
-        console.log('task ' + name + ' not found');
+      //  console.log('task ' + name + ' not found', data);
       }else{
         task.set('js', js);
+        task.test();
       }
     });
   });
@@ -38,10 +41,12 @@ router.on('route:export', function(page){
   var $textarea = $('<textarea class="export">');
   var data = '';
   tasks.tasks.forEach(function(task){
-    data += task.get('name') + "\n---\n" + task.get('js') + "\n==========\n\n";
+    if(task.get('status') !== 'none'){
+      data += task.get('name') + "\n---\n" + task.get('js') + "\n==========\n\n";
+    }
   });
   $textarea.text(data);
-  $('#content').html($textarea);
+  $('#content').html('<section><h1>Export passing/failing tasks</h1>' + $textarea.wrap('<div>').parent().html() + '</section>');
 });
 
 var MenuTaskView = Backbone.View.extend({

@@ -39,6 +39,7 @@ var Task = Backbone.Model.extend({
     var that = this;
     db.get(name, function(err, res){
       if(!err){
+        that.set('status', res.status);
         that.set('js', res.js);
       }
       callback()
@@ -49,15 +50,36 @@ var Task = Backbone.Model.extend({
   },
   save: function(){
     var name = this.getEscapedName();
-    var js = this.get('js');
+    var doc = {_id: name, js: this.get('js'), status: this.get('status')};
+    console.log(doc);
     db.get(name, function(err, res){
-      var doc = {_id: name, js: js};
       if(!err){
         doc._rev = res._rev;
       }
       db.post(doc, function(err, res){
         //console.log('saved task', err, res);
       });
+    });
+  },
+  test: function(callback){
+    // this is some test resetting magic. Normally you don't do that
+    // with QUnit so it doesn't work too well
+    QUnit.reset();
+    QUnit.init();
+    QUnit.start();
+
+    var code = this.get('js');
+    eval.call(window, code);
+
+    var tests = this.get('tests');
+    tests();
+
+    var that = this;
+    QUnit.tests.one('done', function(e, res){
+      that.set('status', !res.failed ? 'pass' : 'fail');
+      if(typeof callback === 'function'){
+        callback();
+      }
     });
   }
 });
@@ -66,23 +88,9 @@ var TaskView = Backbone.View.extend({
   template: _.template($('#taskView').html()),
   events: {
     'click .go': function(){
-      // this is some test resetting magic. Normally you don't do that
-      // with QUnit so it doesn't work too well
-      QUnit.reset();
-      QUnit.init();
-      QUnit.start();
-
-      var editor = this.model.get('editor');
-
-      var code = editor.getSession().getValue();
-      eval.call(window, code);
-
-      var tests = this.model.get('tests');
-      tests();
-
-      var that = this;
-      QUnit.tests.one('done', function(e, res){
-        that.model.set('status', !res.failed ? 'pass' : 'fail');
+      var model = this.model;
+      this.model.test(function(){
+        model.save();
       });
     },
     'click .prev': function(){
@@ -117,7 +125,6 @@ var TaskView = Backbone.View.extend({
     var that = this;
     editor.on('change', function(){
       that.model.set('js', editor.getSession().getValue());
-      that.model.save();
     });
 
     this.model.set('editor', editor);

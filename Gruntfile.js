@@ -4,7 +4,7 @@ module.exports = function(grunt) {
   grunt.initConfig({
     concat: {
       tasks: {
-        src: ['tasks/*'],
+        src: ['tasks/*.js', 'tasks/homework/*.js'],
         dest: 'dist/tasks.js'
       }
     },

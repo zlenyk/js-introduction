@@ -515,3 +515,47 @@ tasks.add('returning-object', {
     });
   }
 });
+
+tasks.module("homework");
+
+tasks.add("factorial", {
+  instruction: "Write a function `f` with takes argument `n` and `1!`. For incorrect arument return `-1`.",
+  js: "var f = function(n){\n\n}",
+  tests: function(){
+    test('test f', function(){
+      // for testing functions see: http://api.qunitjs.com/category/assert/
+      notStrictEqual(f, undefined, 'f is defined');
+      strictEqual(typeof f, 'function', 'f is a function');
+
+      var res = 1;
+      for(var i = 1; i < 10; i++){
+        res *= i;
+        strictEqual(f(i), res, 'correct value of f(' + i + ')');
+      }
+
+      strictEqual(f(0), 1, 'correct value for f(0)');
+      strictEqual(f(-1), -1, 'correct value for f(-1)');
+      strictEqual(f('wut'), -1, 'correct value for f(\'wut\')');
+      strictEqual(f(function(){}), -1, 'correct value for f(function(){})');
+      strictEqual(f({}), -1, 'correct value for f({})');
+    });
+  }
+});
+
+tasks.module("homework");
+
+tasks.add("html-shuffling", {
+  instruction: "Sort `&lt;li&gt;`'s children of `&lt;ul id='list'&gt;`",
+  html: '<ul id="list"><li data-content="5">5</li><li id="3">3</li><li class="2">2</li><li name="1">1</li><li data-value="4">4</li></ul>',
+  tests: function(){
+    test('test', function(){
+      // for testing functions see: http://api.qunitjs.com/category/assert/
+      var li = $('#list li');
+      strictEqual($(li[0]).attr('name'), '1', 'st ok');
+      strictEqual($(li[1]).attr('class'), '2', 'nd ok');
+      strictEqual($(li[2]).attr('id'), '3', 'rd ok');
+      strictEqual($(li[3]).attr('data-value'), '4', '4th ok');
+      strictEqual($(li[4]).attr('data-content'), '5', '5th ok');
+    });
+  }
+});

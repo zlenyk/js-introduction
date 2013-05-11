@@ -79,3 +79,79 @@ tasks.add('async', {
   }
 });
 
+tasks.add('my-jquery', {
+  instruction: 'You\'ve seen how to register events using jQuery - `$(\'#el_with_some_id\').on(\'click\', function(){});`. Now got ahead and write your own object called `my$` which will implement the exact same interface as in the example. The only supported selector should be `#` for id and `.` for class. You don\'t even have to join them. (see tests) The only supported event is `click` and `dblclick`. You should support multiple events. You should support chaining syntax `my$(___).on(___).on(___)`. If someone puts invalid arguments, say `$(\'%wutt\').on(___)` don\'t crash just do nothing. Don\'t use jQuery in this task. (yup, `my$ = $` passes the tests)',
+  js: 'var my$ = function(){\n\n};',
+  html: '<div id="one">one</div><em class="whoa">whoa1</em><div id="two">two</div><em class="whoa">whoa2</em><div id="three">three</div>',
+  tests: function(){
+    test('test my$', function(){
+      // mouse click simulaton. Happened much more complicated than I thought
+      function simClick(cb, name) {
+        var evt = document.createEvent('MouseEvents');
+        evt.initMouseEvent(name, true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+        cb.dispatchEvent(evt);
+      }
+
+      function check(str){
+        strictEqual(typeof my$(str), 'object', 'my$(' + str + ') is object');
+        strictEqual(typeof my$(str).on, 'function', 'my$(' + str + ').on is function');
+        strictEqual(typeof my$(str).on(), 'object', 'my$(' + str + ').on() is object');
+        strictEqual(typeof my$(str).on().on, 'function', 'my$(' + str + ').on().on is function');
+        strictEqual(typeof my$(str).on().on(), 'object', 'my$(' + str + ').on().on() is object');
+      }
+
+      strictEqual(typeof my$, 'function', 'my$ is a function');
+      check('invalid_one');
+      check('#one');
+      check('.whoa');
+
+      my$('invalid_one').on('click', function(){});
+      my$('#one').on('invalid_one', function(){});
+
+      var arr = [0, 0, 0, 0, 0];
+      my$('#one').on('click', function(){
+        arr[0]++;
+      });
+      my$('#two').on('click', function(){
+        arr[1]++;
+      });
+      my$('#two').on('click', function(){
+        arr[2]++;
+      });
+      my$('#three').on('click', function(){
+        arr[3]++;
+      }).on('dblclick', function(){
+        arr[4]++;
+      });
+
+      simClick($('#one')[0], 'click');
+      strictEqual(arr[0], 1, 'single click registered');
+
+      simClick($('#two')[0], 'click');
+      strictEqual(arr[1], 1, 'single click multiple events registered 0');
+      strictEqual(arr[2], 1, 'single click multiple events registered 1');
+
+      simClick($('#three')[0], 'dblclick');
+      simClick($('#three')[0], 'click');
+
+      strictEqual(arr[3], 1, 'single click registered');
+      strictEqual(arr[4], 1, 'dblclick click registered');
+
+      var count = 0;
+      var clicked;
+      my$('.whoa').on('click', function(){
+        clicked = this;
+        count++;
+      }).on('click', function(){
+        count++;
+      });
+
+      $('.whoa').each(function(key, el){
+        simClick(el, 'click');
+        strictEqual(clicked, el, 'correct event for class');
+      });
+      strictEqual(count, 4, 'correct total number of clicks');
+    });
+  }
+});
+

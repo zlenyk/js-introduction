@@ -155,3 +155,42 @@ tasks.add('my-jquery', {
   }
 });
 
+tasks.add('clock', {
+  html: '<div id="clock">clock here plx</div>',
+  instruction: 'Your task is to create a clock. That is given `div#clock` as above write a function `clock(server)` which returns function which updates this div text content with current date in the following format: `yyyy-mm-dd`. Your script will get variable `server` which will emit time synchronization with server. You should register to its `on` method to update current server time, see example below and have a look at tests.',
+  js: 'server.on(\'update\', function(date){\n  console.log(date); // 1368278556581\n});',
+  tests: function(){
+    test('clock', function(){
+      var server = {
+        methods: [],
+        on: function(name, callback){
+          if(name !== 'update'){
+            return alert(name + ' event not supported by server');
+          }
+          if(typeof callback !== 'function'){
+            return alert('callback to server must be a function');
+          }
+          this.methods.push(callback);
+        },
+        emit: function(date){
+          this.methods.forEach(function(method){
+            method(date);
+          });
+        }
+      };
+
+      var c = clock(server);
+      c();
+
+      strictEqual(+$('#clock').text().split('-')[2], new Date().getDate(), 'correct day of month');
+
+      // some dates
+      var dates = ['2000-01-01', '2013-10-10', '2013-12-24', '2089-01-23'];
+      dates.forEach(function(date){
+        server.emit(new Date(date));
+        c();
+        strictEqual($('#clock').text(), date, 'correct date after update');
+      });
+    });
+  }
+});

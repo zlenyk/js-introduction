@@ -1,5 +1,90 @@
 tasks.module('homework2');
 
+tasks.add('event-emitter', {
+  instruction: 'Create simple event-emitter implementation. That is create a function `createEmitter` which returns an object having methods `emit(name)` which emits event, `on(name, callback)` which let you register event listener and `once(name, callback)` which fires the events only once. Your emitter should also support `off(name)` method which removes all listeners for `name` event. If we fire `off(name, fun)` then remove only that one registered function.',
+  js: 'var createEmitter = function(){\n\n};',
+  tests: function(){
+    test('test emitter', function(){
+      strictEqual(typeof createEmitter, 'function', 'createEmitter is a function');
+
+      var ee = createEmitter();
+
+      strictEqual(typeof ee.on, 'function', '.on is a function');
+      strictEqual(typeof ee.once, 'function', '.once is a function');
+      strictEqual(typeof ee.emit, 'function', '.emit is a function');
+
+      var count = [0, 0, 0, 0];
+
+      ee.on('ping', function(){
+        count[3]++;
+      });
+
+      ee.on('alert', function(){
+        count[0]++;
+      });
+      ee.on('alert', function(){
+        count[1]++;
+      });
+
+
+      ee.once('notify', function(){
+        count[2]++;
+      });
+
+      for(var i = 1; i < 5; i++){
+        ee.emit('ping');
+        strictEqual(count[3], i, 'correct number of events emitted');
+      }
+
+      for(var i = 1; i < 5; i++){
+        ee.emit('notify');
+        strictEqual(count[2], 1, 'correct number of events emitted (once)');
+      }
+
+      for(var i = 1; i < 5; i++){
+        ee.emit('alert');
+        strictEqual(count[0], i, 'correct number of events emitted (two events)');
+        strictEqual(count[1], i, 'correct number of events emitted (two events)');
+      }
+
+      ee.off('alert');
+      ee.emit('alert');
+
+      strictEqual(count[0], 4, 'events no longer emitted');
+      strictEqual(count[1], 4, 'events no longer emitted');
+
+      // selective off
+      count = [0, 0];
+      var f = function(){
+        count[0]++;
+      };
+      var g = function(){
+        count[1]++;
+      };
+
+      ee.on('selective', f);
+      ee.on('selective', g);
+
+      ee.off('selective', g);
+
+      ee.emit('selective');
+      strictEqual(count[0], 1, 'f is registered');
+      strictEqual(count[1], 0, 'g got unregistered');
+
+      // off random functions
+      ee.off('selective', function(){});
+      ee.off('selective', function(){});
+      ee.off('selective', function(){});
+      ee.off('selective', function(){});
+
+      count = [0, 0];
+      ee.emit('selective');
+      strictEqual(count[0], 1, 'f (still) is registered');
+      strictEqual(count[1], 0, 'g (still) got unregistered');
+    });
+  }
+});
+
 tasks.add('async', {
   instruction: 'As we know javascript is single threaded. (remember `setTimeout`?) Sometimes you need to fire a function when all asynchronous methods finish their job, for example: you have to retrieve 3 rows from your `Pouchdb` (or `indexeddb`) database (asynchronously) and also wait for the answer from a server (ajax). When you\'re done you can render something on the screen.\n' + 
   'Your task is to write a function `done` which takes an array `fun` of asynchronous functions as its first argument and a callback function as its second argument. Every function `f` from `fun` has signature `f(callback2)` that is: when the function is finished it will fire `callback2` function. Your function `done` should fire all functions from `fun` array and then fire `callback` just after all those asynchronous functions have finished. Solution using hardcoded `setTimeout` will be rejected. Have a look at comments in tests!',

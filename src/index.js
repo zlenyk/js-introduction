@@ -69,6 +69,34 @@ var Task = Backbone.Model.extend({
     QUnit.start();
 
     var code = this.get('js');
+
+    // the most basic js linting
+    var result = JSHINT(code, {
+      debug:true,
+      eqnull:true,
+      boss:true,
+      loopfunc:true,
+      undef:true,
+      browser:true,
+      jquery:true,
+      devel:true
+    }, {window: false});
+    if(!result){
+      var t = _.template($('#jshintError').html());
+      var errors = JSHINT.errors.map(function(err){
+        return {
+          row: err.line,
+          col: err.character,
+          reason: err.reason,
+          evidence: err.evidence
+        };
+      });
+      $('.jshint .errors').html(t({errors: errors}));
+      $('.jshint').show(1000);
+    }else{
+      $('.jshint').hide(400);
+    }
+
     eval.call(window, code);
 
     var tests = this.get('tests');

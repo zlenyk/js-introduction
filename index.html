@@ -11,9 +11,22 @@
     <script src="deps/underscore.js"></script>
     <script src="deps/backbone-min.js"></script>
     <script src="deps/pouchdb.js"></script>
+    <script src="deps/jshint-2.0.1.js"></script>
     <script src="deps/codemirror/lib/codemirror.js"></script>
     <script src="deps/qunit.js"></script>
     <script src="deps/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+
+    <script id="jshintError" type="text/template">
+      <ul>
+        <% _(errors).forEach(function(e){ %>
+        <li class="jshintError">
+          <span class="row"><%= e.row %></span>:<span class="col"><%= e.col %></span>
+          <span class="reason"><%= e.reason %></span>
+          <code class="evidence"><%= e.evidence %></code>
+        </li>
+        <% }); %>
+      </ul>
+    </script>
 
     <script id="taskView" type="text/template">
       <h1>Task</h1>
@@ -22,8 +35,11 @@
       <div class="html"><%= html %></div>
       <h1>Code</h1>
       <div class="code"><%- js %></div>
+      <section class="jshint">
+      <h1><a href="http://www.jshint.com/">JSHint</a> errors</a></h1>
+      <div class="errors" />
+      </section>
       <input class="go" type="button" value="go"/>
-
       <input class="prev" type="button" value="prev" />
       <input class="next" type="button" value="next" />
     </script>

@@ -5,7 +5,26 @@ module.exports = function(grunt) {
     concat: {
       tasks: {
         src: ['tasks/*.js', 'tasks/homework/*.js'],
-        dest: 'dist/tasks.js'
+        dest: 'dist/tasks.js',
+        options: {
+          process: function(src){
+            var keywords = [
+              'deepEqual',
+              'equal',
+              'notDeepEqual',
+              'notEqual',
+              'notStrictEqual',
+              'ok',
+              'strictEqual',
+              'test'
+            ];
+
+            keywords.forEach(function(k){
+              src = src.replace(new RegExp('(' + k + '\s*\\()', 'g'), 'QUnit.$1');
+            });
+            return src;
+          }
+        }
       }
     },
     watch: {

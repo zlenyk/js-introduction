@@ -97,10 +97,16 @@ var Task = Backbone.Model.extend({
       $('.jshint').hide(400);
     }
 
-    eval.call(window, code);
-
     var tests = this.get('tests');
-    tests();
+
+    // really nasty stuff just to save you from
+    // overriding test function or destorying teh world
+    eval(
+      '(function(){\n' +
+      code + '\n' +
+      '(' + tests.toString() + ')()\n' +
+      '})()'
+    );
 
     var that = this;
     QUnit.tests.one('done', function(e, res){

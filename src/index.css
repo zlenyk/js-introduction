@@ -13,32 +13,37 @@ code{
   border-color: #bbb;
 }
 
+.jshint{
+  display: none;
+}
+
+
 body{background:rgb(226, 238, 243);}
 #layout{
-	background:rgb(226, 238, 243);
-	position:relative;
-	min-height:100%;
+  background:rgb(226, 238, 243);
+  position:relative;
+  min-height:100%;
 }
 #menu{
-	background-color: #2b81af;
-	color: #333;
-	font-family:"Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Calibri, Helvetica, Arial, sans-serif;
-	width:200px;
-	float:left;border-right:3px solid #C6E746;
-	padding:0;
-	min-height:100%;
+  background-color: #2b81af;
+  color: #333;
+  font-family:"Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Calibri, Helvetica, Arial, sans-serif;
+  width:200px;
+  float:left;border-right:3px solid #C6E746;
+  padding:0;
+  min-height:100%;
 }
 
 #menu h3{
-	color:#eee;
-	font-size:1.1em;margin:0;padding:0;padding-top:10px;
+  color:#eee;
+  font-size:1.1em;margin:0;padding:0;padding-top:10px;
 }
 
 #menu ul{
-	list-style-type:square;
-	color:#eee;
-	padding:0;
-	margin:0 0 0 20px;
+  list-style-type:square;
+  color:#eee;
+  padding:0;
+  margin:0 0 0 20px;
 }
 
 #menu li{
@@ -47,14 +52,14 @@ body{background:rgb(226, 238, 243);}
 }
 
 #menu li.current{
-	background:#C6E746;
+  background:#C6E746;
   padding: 0 0 0 6px;
   border-radius: 3px 0 0 3px;
 }
 
 #menu a{display: block}
 #menu a:hover{
-	background-color: rgba(255,255,255,0.3);
+  background-color: rgba(255,255,255,0.3);
 }
 
 

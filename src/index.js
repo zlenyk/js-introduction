@@ -93,28 +93,33 @@ var Task = Backbone.Model.extend({
       });
       $('.jshint .errors').html(t({errors: errors}));
       $('.jshint').show(1000);
+
+      // make qunit fail
+      test('jshint', function(){
+        ok(result, 'jshint should pass');
+      });
     }else{
       $('.jshint').hide(400);
+
+      var tests = this.get('tests');
+
+      // really nasty stuff just to save you from
+      // overriding test function or destorying teh world
+      eval(
+        '(function(){\n' +
+        code + '\n' +
+        '(' + tests.toString() + ')()\n' +
+        '})()'
+      );
+
+      var that = this;
+      QUnit.tests.one('done', function(e, res){
+        that.set('status', !res.failed ? 'pass' : 'fail');
+        if(typeof callback === 'function'){
+          callback();
+        }
+      });
     }
-
-    var tests = this.get('tests');
-
-    // really nasty stuff just to save you from
-    // overriding test function or destorying teh world
-    eval(
-      '(function(){\n' +
-      code + '\n' +
-      '(' + tests.toString() + ')()\n' +
-      '})()'
-    );
-
-    var that = this;
-    QUnit.tests.one('done', function(e, res){
-      that.set('status', !res.failed ? 'pass' : 'fail');
-      if(typeof callback === 'function'){
-        callback();
-      }
-    });
   }
 });
 var TaskView = Backbone.View.extend({
